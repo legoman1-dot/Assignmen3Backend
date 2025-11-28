@@ -1,0 +1,52 @@
+var express = require('express');
+var cors = require('cors');
+var createError = require('http-errors');
+var logger = require('morgan');
+var configDb = require('./config/db');
+var firebaseAdmin = require('./config/firebaseAdmin.js');
+
+var indexRouter = require('./app/routers/index.js');
+var userRouter = require('./app/routers/users.js');
+var contactRouter = require('./app/routers/contact.js');
+var inventoryRouter = require('./app/routers/inventory.js')
+
+var app = express();
+
+app.use(cors());
+
+configDb();
+firebaseAdmin();
+
+app.use(logger('dev') );
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use('/', indexRouter);
+app.use('/api/users', userRouter);
+app.use('/api/contacts', contactRouter);
+app.use('/api/inventory', inventoryRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // create the error json
+  res.status(err.status || 500);
+  res.json(
+    {
+      success: false,
+      message: err.message
+    }
+  );
+});
+
+app.listen(3000, () => {
+    console.log('Server running at http://localhost:3000/');
+});

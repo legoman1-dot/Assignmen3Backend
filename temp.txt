@@ -1,0 +1,8 @@
+admin_db_user
+TqVOBZeaSUxI1S7i
+
+mongodb+srv://admin_db_user:TqVOBZeaSUxI1S7i@cluster003.oviumia.mongodb.net/
+
+
+
+mongodb+srv://admin_db_user:<db_password>@cluster003.oviumia.mongodb.net/
